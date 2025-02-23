@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import PayPalButton from './components/PayPalButton.vue';
-
+import { loadScript } from "@paypal/paypal-js";
+import { onMounted, ref, watch } from 'vue';
 const email = ref('');
 const showPreorder = ref(false);
 
@@ -28,6 +28,46 @@ const handleWaitlist = async () => {
     alert('Failed to join waitlist. Please try again.');
   }
 };
+
+const PAYPAL_CLIENTID = import.meta.env.VITE_PAYPAL_CLIENTID;
+const selectedDevice = ref('toyDevice');
+const price = ref('249.99');
+const shippingInfo = ref('Shipping end of Jun\'25');
+
+watch(selectedDevice, (newDevice) => {
+  if (newDevice === 'toyDevice') {
+    price.value = '249.99';
+    shippingInfo.value = "Shipping end of Jun'25";
+  } else if (newDevice === 'hvDevice') {
+    price.value = '2649.99';
+    shippingInfo.value = "Shipping end of August'25";
+  }
+});
+
+onMounted(async () => {
+  const paypal = await loadScript({
+    "client-id": PAYPAL_CLIENTID, // Replace with your PayPal client ID
+    currency: "USD"
+  });
+
+  if (paypal) {
+    paypal.Buttons({
+      createOrder: (data: any, actions: any) => {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: price.value
+            }
+          }]
+        });
+      },
+      onApprove: async (data: any, actions: any) => {
+        const order = await actions.order.capture();
+        alert("Payment successful! Order ID: " + order.id);
+      }
+    }).render("#paypal-button-container");
+  }
+});
 </script>
 
 <template>
@@ -39,7 +79,7 @@ const handleWaitlist = async () => {
           The Aether Disruptor
         </h1>
         <p class="text-xl text-brass mb-8">
-          A <b>Steampunk Marvel</b> available as either a <b>toy</b> or <b>robot disruptor</b>
+          A <b>Steampunk Marvel</b> available as either a <b>Toy</b> or <b>Robot Disruptor</b>
         </p>
       </div>
 
@@ -101,27 +141,33 @@ const handleWaitlist = async () => {
         </form>
       </div>
 
-      <!-- Pre-order Section -->
       <div class="steampunk-border max-w-2xl mx-auto">
-        <h2 class="text-3xl font-bold text-copper mb-4 text-center">
-          Pre-order Now (Toy Device). Shipping end of Jun'25
-        </h2>
-        <p class="text-center mb-4">
-          Limited first batch available at special price: $249.99
-        </p>
-        <PayPalButton amount="249.99" />
-      </div>
-      
-      <!-- Pre-order Section -->
-      <div class="steampunk-border max-w-2xl mx-auto">
-        <h2 class="text-3xl font-bold text-copper mb-4 text-center">
-          Pre-order Now (HV Device). Shipping end of August'25
-        </h2>
-        <p class="text-center mb-4">
-          Limited first batch available at special price: $2649.99
-        </p>
-        <PayPalButton amount="1649.99" />
-      </div>
+    <h2 class="text-3xl font-bold text-copper mb-4 text-center">
+      Pre-order Now
+    </h2>
+    <div class="text-center mb-4">
+      <label for="device-select" class="font-bold mr-2">Choose your device:</label>
+      <select 
+        id="device-select" 
+        v-model="selectedDevice" 
+        class="border p-2 rounded-md text-black"
+      >
+        <option value="toyDevice">Toy Device</option>
+        <option value="hvDevice">HV Device</option>
+      </select>
     </div>
+
+    <p class="text-center mb-4">
+      <span v-if="selectedDevice === 'toyDevice'">
+        Limited first batch available at special price: <b>$249.99</b>. Shipping end of Jun'25.
+      </span>
+      <span v-if="selectedDevice === 'hvDevice'">
+        Limited first batch available at special price: <b>$2649.99</b>. Shipping end of August'25.
+      </span>
+    </p>
+
+    <div id="paypal-button-container" class="w-full max-w-md mx-auto mt-4"></div>
   </div>
+  </div>
+</div>
 </template>
