@@ -191,10 +191,10 @@ onMounted(async () => {
 
     <p class="text-center mb-4">
       <span v-if="selectedDevice === 'toyDevice'">
-        Limited first batch available at special price: <b>$249.99</b>. Shipping end of Jun'25.
+        Limited first batch available at a special price: <b>$249.99</b>. Shipping end of Jun'25.
       </span>
       <span v-if="selectedDevice === 'hvDevice'">
-        Limited first batch available at special price: <b>$2649.99</b>. Shipping end of August'25. <p class="text-red">Rights reseved to ship 1 months later.</p>
+        Limited first batch available at a special price: <b>$2649.99</b>. Shipping end of August'25. <p class="text-red">Rights reseved to ship 1 months later.</p>
       </span>
     </p>
 
