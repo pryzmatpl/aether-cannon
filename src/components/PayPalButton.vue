@@ -8,27 +8,32 @@ const props = defineProps<{
 
 onMounted(async () => {
   const paypal = await loadScript({
-    "client-id": PAYPAL_CLIENTID, // Replace with your PayPal client ID
+    clientId: PAYPAL_CLIENTID, // Replace with your PayPal client ID
     currency: "USD"
   });
 
-  if (paypal) {
-    paypal.Buttons({
-      createOrder: (data: any, actions: any) => {
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              value: props.amount
-            }
-          }]
-        });
-      },
-      onApprove: async (data: any, actions: any) => {
-        const order = await actions.order.capture();
-        alert("Payment successful! Order ID: " + order.id);
-      }
-    }).render("#paypal-button-container");
-  }
+  if (typeof(paypal) !== 'undefined' && paypal !== null) {
+  paypal.Buttons({
+    createOrder: (data: any, actions: any) => {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: props.amount
+          },
+          description: {
+            'data': data
+          }
+        }]
+      });
+    },
+    onApprove: async (data: any, actions: any) => {
+      console.log(data);
+      const order = await actions.order.capture();
+      alert("Payment successful! Order ID: " + order.id);
+    }
+  }).render("#paypal-button-container");
+}
+
 });
 </script>
 

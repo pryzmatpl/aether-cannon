@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import PayPalButton from './components/PayPalButton.vue';
-import { loadScript } from "@paypal/paypal-js";
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 const email = ref('');
-const showPreorder = ref(false);
 const currentImage = ref(0);
 
 const imageData = [
@@ -45,7 +42,6 @@ const handleWaitlist = async () => {
   }
 };
 
-const PAYPAL_CLIENTID = import.meta.env.VITE_PAYPAL_CLIENTID;
 const selectedDevice = ref('toyDevice');
 const price = ref('249.99');
 const shippingInfo = ref('Shipping end of Jun\'25');
@@ -60,30 +56,6 @@ watch(selectedDevice, (newDevice) => {
   }
 });
 
-onMounted(async () => {
-  const paypal = await loadScript({
-    "client-id": PAYPAL_CLIENTID, // Replace with your PayPal client ID
-    currency: "USD"
-  });
-
-  if (paypal) {
-    paypal.Buttons({
-      createOrder: (data: any, actions: any) => {
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              value: price.value
-            }
-          }]
-        });
-      },
-      onApprove: async (data: any, actions: any) => {
-        const order = await actions.order.capture();
-        alert("Payment successful! Order ID: " + order.id);
-      }
-    }).render("#paypal-button-container");
-  }
-});
 </script>
 
 <template>
