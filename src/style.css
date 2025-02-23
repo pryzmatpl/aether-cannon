@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --copper: #B87333;
+  --brass: #B5A642;
+  --steel: #71797E;
+}
+
+body {
+  @apply bg-gray-900 text-gray-100;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.steampunk-border {
+  @apply border-2 border-copper rounded-lg p-4 bg-gray-800/50 backdrop-blur-sm;
+}
+
+.btn-primary {
+  @apply bg-copper hover:bg-copper/80 text-white font-bold py-2 px-6 rounded-lg 
+         transition-all duration-300 transform hover:scale-105
+         border-2 border-brass shadow-lg;
+}
+
+.gear-spin {
+  animation: spin 20s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
