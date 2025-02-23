@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { loadScript } from "@paypal/paypal-js";
+import { loadScript, PayPalNamespace } from "@paypal/paypal-js";
 const PAYPAL_CLIENTID = import.meta.env.VITE_PAYPAL_CLIENTID;
 const props = defineProps<{
   amount: string;
 }>();
+
+declare global {
+  interface Window {
+    paypal?: PayPalNamespace | null | undefined;
+  }
+}
 
 onMounted(async () => {
   const paypal = await loadScript({
@@ -13,6 +19,8 @@ onMounted(async () => {
   });
 
   if (typeof(paypal) !== 'undefined' && paypal !== null) {
+
+  // @ts-ignore
   paypal.Buttons({
     createOrder: (data: any, actions: any) => {
       return actions.order.create({
