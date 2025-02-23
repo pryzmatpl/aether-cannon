@@ -4,6 +4,22 @@ import { loadScript } from "@paypal/paypal-js";
 import { onMounted, ref, watch } from 'vue';
 const email = ref('');
 const showPreorder = ref(false);
+const currentImage = ref(0);
+
+const imageData = [
+  { src: 'public/emp-device-1.jpg', alt: 'Steampunk Quantum Disruptor Toy 1', description: 'A handheld toy for young explorers to learn basics of electronics! Coming with a set of knowledge to learn and have fun while building the device!' },
+  { src: 'public/emp-device-2.jpg', alt: 'Steampunk Quantum Disruptor Toy 2', description: 'The Technologists version is a dangerous device for adults and will be sold to engineers only. It will be an open-source project with the license explicitly stating responsiblity. This is not a toy. This is a costly, dangerous device for responsible people.' },
+  { src: 'public/emp-device-3.jpg', alt: 'Steampunk Quantum Disruptor Toy 3', description: 'Coming along with the Toy package, you will also be able to obtain a kid toy robot to have fun with!' }
+];
+
+const prevImage = () => {
+  currentImage.value = (currentImage.value === 0) ? imageData.length - 1 : currentImage.value - 1;
+};
+
+const nextImage = () => {
+  currentImage.value = (currentImage.value === imageData.length - 1) ? 0 : currentImage.value + 1;
+};
+
 
 const handleWaitlist = async () => {
   try {
@@ -82,15 +98,31 @@ onMounted(async () => {
           A <b>Steampunk Marvel</b> available as either a <b>Toy</b> or <b>Robot Disruptor</b>
         </p>
       </div>
-
-      <!-- Main Image -->
+      <!-- Carousel Section -->
       <div class="steampunk-border mb-16">
-        <img 
-          src="/emp-device.jpg" 
-          alt="Steampunk Quantum Disruptor Toy" 
-          class="w-full max-w-3xl mx-auto rounded-lg shadow-2xl"
-        />
-      </div>
+        <div class="relative">
+          <!-- Carousel Images -->
+          <img 
+            :src="imageData[currentImage].src"
+            :alt="imageData[currentImage].alt"
+            class="w-full max-w-3xl mx-auto rounded-lg shadow-2xl"
+          />
+          
+          <!-- Description Below Image -->
+          <p class="text-center mt-4 font-bold text-lg text-copper">
+            {{ imageData[currentImage].description }}
+          </p>
+
+    <!-- Navigation Buttons -->
+    <div class="absolute top-1/2 left-4 transform -translate-y-1/2">
+      <button @click="prevImage" class="bg-black text-white px-3 py-2 rounded-full">&lt;</button>
+    </div>
+    <div class="absolute top-1/2 right-4 transform -translate-y-1/2">
+      <button @click="nextImage" class="bg-black text-white px-3 py-2 rounded-full">&gt;</button>
+    </div>
+  </div>
+</div>
+
 
       <!-- Features -->
       <div class="grid md:grid-cols-3 gap-8 mb-16">
@@ -162,7 +194,7 @@ onMounted(async () => {
         Limited first batch available at special price: <b>$249.99</b>. Shipping end of Jun'25.
       </span>
       <span v-if="selectedDevice === 'hvDevice'">
-        Limited first batch available at special price: <b>$2649.99</b>. Shipping end of August'25.
+        Limited first batch available at special price: <b>$2649.99</b>. Shipping end of August'25. <p class="text-red">Rights reseved to ship 1 months later.</p>
       </span>
     </p>
 
