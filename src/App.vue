@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import PayPalButton from "./components/PayPalButton.vue"
 const email = ref('');
 const currentImage = ref(0);
 
@@ -20,7 +21,7 @@ const nextImage = () => {
 
 const handleWaitlist = async () => {
   try {
-    const response = await fetch('https://pryzmat.pl/waitlist', {
+    const response = await fetch('https://pryzmat.pl/maillist.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -170,7 +171,7 @@ watch(selectedDevice, (newDevice) => {
       </span>
     </p>
 
-    <div id="paypal-button-container" class="w-full max-w-md mx-auto mt-4"></div>
+    <PayPalButton :amount="price"></PayPalButton>
   </div>
   </div>
 </div>
