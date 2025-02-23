@@ -7,13 +7,14 @@ const showPreorder = ref(false);
 
 const handleWaitlist = async () => {
   try {
-    const response = await fetch('https://api.yourdomain.com/waitlist', {
+    const response = await fetch('https://pryzmat.pl/waitlist', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         email: email.value,
+        sku: 'emp',
         to: 'pryzmat@pryzmat.pl'
       })
     });
@@ -35,10 +36,10 @@ const handleWaitlist = async () => {
       <!-- Hero Section -->
       <div class="text-center mb-16">
         <h1 class="text-5xl font-bold text-copper mb-4">
-          The Quantum Disruptor
+          The Aether Disruptor
         </h1>
         <p class="text-xl text-brass mb-8">
-          A Steampunk Marvel for Young Inventors
+          A <b>Steampunk Marvel</b> available as either a <b>toy</b> or <b>robot disruptor</b>
         </p>
       </div>
 
@@ -59,11 +60,23 @@ const handleWaitlist = async () => {
         </div>
         <div class="steampunk-border text-center">
           <h3 class="text-xl font-bold text-copper mb-2">Interactive</h3>
-          <p>Working lights and mechanical sounds</p>
+          <p>Working lights and mechanical sounds in the Kids package</p>
+        </div>
+        <div class="steampunk-border text-center">
+          <h3 class="text-xl font-bold text-copper mb-2">Robot Destroyer</h3>
+          <p>An actual EMP tool in the Technologists package</p>
+        </div>
+        <div class="steampunk-border text-center">
+          <h3 class="text-xl font-bold text-copper mb-2">Shipping - June 2025</h3>
+          <p>First Technologists package shipping starting June'25</p>
         </div>
         <div class="steampunk-border text-center">
           <h3 class="text-xl font-bold text-copper mb-2">Educational</h3>
           <p>Learn about electronics and steampunk aesthetics</p>
+        </div>
+        <div class="steampunk-border text-center">
+          <h3 class="text-xl font-bold text-copper mb-2">Open Source</h3>
+          <p>Pre-orders are funding the OSS github project for the Kids package</p>
         </div>
       </div>
 
@@ -91,12 +104,23 @@ const handleWaitlist = async () => {
       <!-- Pre-order Section -->
       <div class="steampunk-border max-w-2xl mx-auto">
         <h2 class="text-3xl font-bold text-copper mb-4 text-center">
-          Pre-order Now
+          Pre-order Now (Toy Device). Shipping end of Jun'25
         </h2>
         <p class="text-center mb-4">
-          Limited first batch available at special price: $149.99
+          Limited first batch available at special price: $249.99
         </p>
-        <PayPalButton amount="149.99" />
+        <PayPalButton amount="249.99" />
+      </div>
+      
+      <!-- Pre-order Section -->
+      <div class="steampunk-border max-w-2xl mx-auto">
+        <h2 class="text-3xl font-bold text-copper mb-4 text-center">
+          Pre-order Now (HV Device). Shipping end of August'25
+        </h2>
+        <p class="text-center mb-4">
+          Limited first batch available at special price: $2649.99
+        </p>
+        <PayPalButton amount="1649.99" />
       </div>
     </div>
   </div>

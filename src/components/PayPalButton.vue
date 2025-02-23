@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { loadScript } from "@paypal/paypal-js";
-
+const PAYPAL_CLIENTID = import.meta.env.VITE_PAYPAL_CLIENTID;
 const props = defineProps<{
   amount: string;
 }>();
 
 onMounted(async () => {
   const paypal = await loadScript({
-    "client-id": "test", // Replace with your PayPal client ID
+    "client-id": PAYPAL_CLIENTID, // Replace with your PayPal client ID
     currency: "USD"
   });
 
